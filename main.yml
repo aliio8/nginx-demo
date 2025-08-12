@@ -1,0 +1,19 @@
+name: SSH测试
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 配置SSH密钥
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        
+    - name: SSH连接测试
+      run: |
+        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "echo '连接成功'"
