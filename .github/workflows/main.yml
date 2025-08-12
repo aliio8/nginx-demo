@@ -10,10 +10,10 @@ jobs:
     - name: 配置SSH密钥
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
         
     - name: SSH连接测试
       run: |
-        ssh ${{ secrets.USER }}@${{ secrets.HOST }} "echo '连接成功'"
+        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo '连接成功'"
