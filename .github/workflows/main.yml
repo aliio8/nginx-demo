@@ -14,4 +14,4 @@ jobs:
         
     - name: SSH密码登录测试
       run: |
-        sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo '连接成功'"
+        sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no qianxi@8.148.186.229 "echo '连接成功'"
