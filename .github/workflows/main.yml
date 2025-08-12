@@ -7,16 +7,11 @@ jobs:
   test:
     runs-on: ubuntu-22.04
     steps:
-    - name: 检出代码
-      uses: actions/checkout@v4
-      
-    - name: 配置SSH密钥
+    - name: 安装sshpass
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        sudo apt-get update
+        sudo apt-get install -y sshpass
         
-    - name: SSH连接测试
+    - name: SSH密码登录测试
       run: |
-        ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo '连接成功'"
+        sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo '连接成功'"
