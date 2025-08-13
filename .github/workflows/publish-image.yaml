@@ -1,30 +1,19 @@
-name: "Publish Container Image"
-
-on:
-  push:
+name: Build & Push Nginx
+on: push
 
 jobs:
-  publish:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      packages: write
+  docker:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.5
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to GitHub Package Registry
-        uses: docker/login-action@v1.12.0
+      - uses: actions/checkout@v3
+
+      - uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: aliio8
+          password: ${{ secrets.CR_PAT }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v2.7.0
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64/v8
-          push: true
-          tags: ghcr.io/lomtom/spark-dependencies:1.62.0
+      - run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/nginx-demo:latest
+          docker build -t $IMAGE .
+          docker push $IMAGE
