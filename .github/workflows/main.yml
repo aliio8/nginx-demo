@@ -1,0 +1,24 @@
+name: Push Nginx image to GHCR
+
+on:
+  workflow_dispatch: # 手动触发
+
+jobs:
+  push:
+    runs-on: ubuntu-20.04
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
+
+      - name: Pull official Nginx image
+        run: docker pull nginx:latest
+
+      - name: Tag image for GHCR
+        run: docker tag nginx:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/nginx-demo:latest
+
+      - name: Push image to GHCR
+        run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/nginx-demo:latest
