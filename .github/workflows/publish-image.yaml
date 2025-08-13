@@ -28,4 +28,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64/v8
           push: true
-          tags: ghcr.io/lomtom/spark-dependencies:1.62.0
+          tags: ghcr.io/aliio8/my-nginx-image:latest
